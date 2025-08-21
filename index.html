@@ -2,13 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz App with Timer</title>
+  <title>Quiz App with Timer & Difficulty</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <div class="quiz-container">
-  <div id="quiz">
+  <div id="start-screen">
+    <h2>Select Difficulty</h2>
+    <button class="level-btn" data-level="easy">Easy</button>
+    <button class="level-btn" data-level="medium">Medium</button>
+    <button class="level-btn" data-level="hard">Hard</button>
+  </div>
+
+  <div id="quiz" style="display: none;">
     <div class="quiz-header">
       <div class="timer" id="timer">Time Left: 60s</div>
       <div class="question" id="question">Question text</div>
@@ -26,5 +33,5 @@
 
 <script src="index.js"></script>
 </body>
-</html>
+</html>   
  
