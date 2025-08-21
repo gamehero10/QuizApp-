@@ -72,3 +72,8 @@ button:hover {
 .level-btn:hover {
   background-color: #0b7dda;
 }
+
+#language-selector {
+  margin-bottom: 20px;
+  text-align: right;
+}
