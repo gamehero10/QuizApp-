@@ -41,9 +41,11 @@ const c_text = document.getElementById('c_text');
 const d_text = document.getElementById('d_text');
 const submitBtn = document.getElementById('submit');
 const resultEl = document.getElementById('result');
+const timerEl = document.getElementById('timer');
 
 let currentQuiz = 0;
 let score = 0;
+let timeLeft = 60; // seconds
 
 function loadQuiz() {
   deselectAnswers();
@@ -70,6 +72,28 @@ function deselectAnswers() {
   answerEls.forEach(el => el.checked = false);
 }
 
+function endQuiz(reason = "Time's up!") {
+  resultEl.innerHTML = `
+    <h3>${reason}</h3>
+    <p>You scored ${score} out of ${quizData.length}</p>
+    <button onclick="location.reload()">Restart Quiz</button>
+  `;
+  submitBtn.style.display = 'none';
+  clearInterval(timerInterval);
+}
+
+// Timer countdown
+function updateTimer() {
+  if (timeLeft <= 0) {
+    endQuiz("⏰ Time's up!");
+  } else {
+    timerEl.innerText = `Time Left: ${timeLeft}s`;
+    timeLeft--;
+  }
+}
+
+const timerInterval = setInterval(updateTimer, 1000);
+
 submitBtn.addEventListener('click', () => {
   const answer = getSelected();
   if (answer) {
@@ -80,11 +104,7 @@ submitBtn.addEventListener('click', () => {
     if (currentQuiz < quizData.length) {
       loadQuiz();
     } else {
-      resultEl.innerHTML = `
-        <h3>You answered ${score}/${quizData.length} questions correctly</h3>
-        <button onclick="location.reload()">Reload Quiz</button>
-      `;
-      submitBtn.style.display = 'none';
+      endQuiz("🎉 Quiz Complete!");
     }
   } else {
     alert("Please select an answer before submitting!");
