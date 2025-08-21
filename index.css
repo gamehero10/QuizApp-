@@ -18,7 +18,7 @@ body {
 
 .quiz-header {
   display: flex;
-  justify-content: space-between;  
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -61,7 +61,7 @@ button:hover {
 }
 
 .result {
-  font-size: 22px;
+  font-size: 20px;
   margin-top: 20px;
 }
 
@@ -72,4 +72,3 @@ button:hover {
 .level-btn:hover {
   background-color: #0b7dda;
 }
-  

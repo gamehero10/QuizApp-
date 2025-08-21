@@ -70,14 +70,14 @@ const timerEl = document.getElementById('timer');
 let quizData = [];
 let currentQuiz = 0;
 let score = 0;
-let timeLeft = 60; // total quiz time
+let timeLeft = 60; // seconds
 let timerInterval;
+let selectedLevel = 'easy';
 
-// Difficulty buttons
 document.querySelectorAll('.level-btn').forEach(button => {
   button.addEventListener('click', () => {
-    const level = button.dataset.level;
-    quizData = [...questions[level]];
+    selectedLevel = button.dataset.level;
+    quizData = [...questions[selectedLevel]];
     startScreen.style.display = 'none';
     quizContainer.style.display = 'block';
     loadQuiz();
@@ -110,16 +110,6 @@ function deselectAnswers() {
   answerEls.forEach(el => el.checked = false);
 }
 
-function endQuiz(message = "⏰ Time's up!") {
-  resultEl.innerHTML = `
-    <h3>${message}</h3>
-    <p>Your score: ${score} / ${quizData.length}</p>
-    <button onclick="location.reload()">Restart</button>
-  `;
-  submitBtn.style.display = 'none';
-  clearInterval(timerInterval);
-}
-
 function startTimer() {
   timerInterval = setInterval(() => {
     if (timeLeft <= 0) {
@@ -129,6 +119,28 @@ function startTimer() {
       timeLeft--;
     }
   }, 1000);
+}
+
+function endQuiz(message = "⏰ Time's up!") {
+  clearInterval(timerInterval);
+
+  const highScoreKey = `highscore_${selectedLevel}`;
+  const previousHighScore = localStorage.getItem(highScoreKey) || 0;
+
+  if (score > previousHighScore) {
+    localStorage.setItem(highScoreKey, score);
+  }
+
+  const updatedHighScore = localStorage.getItem(highScoreKey);
+
+  resultEl.innerHTML = `
+    <h3>${message}</h3>
+    <p>Your score: ${score} / ${quizData.length}</p>
+    <p>🏆 High Score (${selectedLevel.toUpperCase()}): ${updatedHighScore} / ${quizData.length}</p>
+    <button onclick="location.reload()">Restart</button>
+  `;
+
+  submitBtn.style.display = 'none';
 }
 
 submitBtn.addEventListener('click', () => {
